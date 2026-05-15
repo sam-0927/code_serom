@@ -17,4 +17,5 @@ stage2_model: 최종 모델.
 stage1_wo_ctc_model1, stage2_wo_ctc_model: ctc loss 를 사용하지 않고 학습한 모델. 구조는 ctc fc layer 빼고, 1024 -> 1024 인 fc layer 만 사용.
 stage1_wo_trans_model, stage2_wo_trans_model: transformer (decoder)를 사용하지 않고 학습한 모델. acoustic emb + content emb -> fc(1024 -> 80) -> mel
 
+https://drive.google.com/drive/u/0/folders/1N7klUlLo0Oyox_o1Rzukm_rY-YwgwUX1
 
