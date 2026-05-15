@@ -1,0 +1,25 @@
+wavlm:
+  model_name: "microsoft/wavlm-large"
+  output_dim: 1024          # WavLM-Large hidden size
+  content_layer: 24         # index in hidden_states tuple (0=CNN, 1..24=transformer)
+  acoustic_layer: 1        # index of the layer to use as acoustic embedding
+
+sv:
+  embed_dim: 192            # speaker embedding dimension
+
+pooling:
+  hidden_dim: 128           # ASP attention bottleneck dimension
+
+# ── TransformerDecoder (used by train_voc.py) ─────────────────────────────────
+decoder:
+  d_model:  1024
+  n_layers: 4
+  n_heads:  8
+  ffn_dim:  4096
+  dropout:  0.1
+  max_len:  4096
+
+# ── CTC head ──────────────────────────────────────────────────────────────────
+ctc:
+  vocab_size: 29
+  blank_id:   0

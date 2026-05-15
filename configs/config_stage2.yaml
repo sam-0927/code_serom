@@ -1,0 +1,71 @@
+samplerate: 16000
+wav_len: 4            # seconds per training segment fed into vocoder
+
+# Path to stage-1 checkpoint (se_model + decoder will be loaded and frozen)
+stage1_ckpt_path: "/workspace/serom_ver3_ft_two_stage/outputs/ft_w_cnn/stage1/checkpoints/model_030.tar"
+
+# Optional: initialise the vocoder from a pretrained standalone checkpoint
+#vocoder_pretrained_path: "outputs/clean_vocoder/checkpoints/model_010.tar"
+vocoder_pretrained_path: ""
+cond: "content"       # must match the stage-1 setting
+n_mels: 80
+
+vocoder_config:
+  input_channels: 80   # = n_mels; decoder.mel_head output fed directly
+  dim: 768
+  intermediate_dim: 2304
+  num_layers: 12
+  n_fft: 1280
+  hop_length: 320
+
+discriminator_config:
+  mpd:
+    mpd_reshapes: [2, 3, 5, 7, 11]
+  mbd:
+    mbd_fft_sizes: [2048, 1024, 512]
+
+optimizer:
+  betas: [0.8, 0.99]
+  weight_decay: 0.01
+  warmup_epochs: 1
+  decay_epochs: 25
+  g:
+    lr: 1.0e-4
+    max_lr: 2.0e-4
+    min_lr: 1.0e-6
+  d:
+    lr: 1.0e-4
+    max_lr: 2.0e-4
+    min_lr: 1.0e-6
+
+coeff:
+  recons: 15
+  adv: 2
+  feat: 1
+
+train_dataset:
+  filelist: /workspace/DB/librispeech_se_snr-515/metadata.txt
+  default_fs: 16000
+
+train_dataloader:
+  batch_size: 16
+  num_workers: 4
+  drop_last: true
+  pin_memory: true
+
+validation_dataset:
+  filelist: /workspace/DB/librispeech_se_snr-515_eval/dev-clean/metadata.txt
+  default_fs: 16000
+
+validation_dataloader:
+  batch_size: 1
+  num_workers: 4
+  drop_last: true
+  pin_memory: true
+
+trainer:
+  epochs: 100
+  save_checkpoint_interval: 10
+  clip_grad_norm_value: 3.0
+  exp_path: outputs/exp_stage2
+  resume: false
